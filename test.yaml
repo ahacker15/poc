@@ -1,0 +1,41 @@
+id: php-info
+info:
+  # Name is the name of the template
+  name: PHP info File Detection Template
+  # Author is the name of the author for the template
+  author: ahacker15
+  # Severity is the severity for the check.
+  severity: low
+  # Description optionally describes the template.
+  description: Searches for the php info on the passed URLs.
+requests:
+  - method: GET
+    path:
+      - "{{BaseURL}}/phpinfo.php"
+      - "{{BaseURL}}/info.php"
+      - "{{BaseURL}}/a.php"
+      - "{{BaseURL}}/asdf.php"
+    # headers contains the headers for the request
+    headers:
+      # Custom user-agent header
+      User-Agent: "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/87.0.4280.141 Safari/537.36"
+    matchers-condition: and
+    matchers:
+      # Match the body word
+      - type: word
+      # Some words we want to match
+        words:
+        - "PHP Version"
+        - "PHP Credits"
+      # Both words must be found in the response body
+        condition: and
+      #  We want to match request body (default)
+        part: body
+      - type: status
+        status:
+          - 200
+          - 302
+
+
+
+    
